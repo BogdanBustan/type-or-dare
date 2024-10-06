@@ -1,5 +1,3 @@
-# Presentation order 1
-
 # from __future__ import annotations  # PEP 563
 
 
