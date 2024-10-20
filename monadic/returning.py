@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, cast
 import pandas as pd
 import pandera as pa
 from pandera.typing import DataFrame, Series
@@ -38,6 +38,7 @@ def generate_data(valid: bool = True) -> pd.DataFrame:
 def validate_data(df: pd.DataFrame) -> Result[DataFrame[UserSchema], pa.errors.SchemaError]:
     try:
         validated_df = UserSchema.validate(df)
+        validated_df = cast(DataFrame[UserSchema], validated_df)
         return Success(validated_df)
     except pa.errors.SchemaError as e:
         return Failure(e)
