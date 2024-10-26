@@ -22,8 +22,18 @@ class MyETLProcess:
         return df * 2
 
 
+class YourETLProcess:
+    def download(self) -> DataFrame:
+        # Implement download logic
+        return pd.DataFrame({"data": [4, 5, 6]})
+
+    def transform(self) -> DataFrame:
+        # Implement transformation logic
+        df = self.download()
+        return df * 3
+
+
 def process_data(etl_process: ETL):
-    df = etl_process.download()
     transformed_df = etl_process.transform()
     print(transformed_df)
 
@@ -32,5 +42,8 @@ def process_data(etl_process: ETL):
 etl = MyETLProcess()
 process_data(etl)
 
-foo = object()
-process_data(foo)
+etl = YourETLProcess()
+process_data(etl)
+
+# foo = object()
+# process_data(foo)
