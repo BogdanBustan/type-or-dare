@@ -49,51 +49,6 @@ class PairNew[K, V]:
         self.key = key
         self.value = value
 
-
-# Generic with Constraints
-# -----------------------------------------
-from typing import Sequence
-from numbers import Number
-
-# Constrained TypeVar
-NumericT = TypeVar('NumericT', bound=Number)
-
-
-# Old syntax
-class Statistics(Generic[NumericT]):
-    def __init__(self, data: Sequence[NumericT]):
-        self.data = data
-
-    def average(self) -> float:
-        return sum(self.data) / len(self.data)
-
-
-# New syntax
-class StatisticsNew[NumericT: Number]:
-    def __init__(self, data: Sequence[NumericT]):
-        self.data = data
-
-    def average(self) -> float:
-        return sum(self.data) / len(self.data)
-
-
-# Generic with Dataclasses
-# -----------------------------------------
-
-# Old syntax
-@dataclass
-class Container(Generic[T]):
-    value: T
-    metadata: Dict[str, str]
-
-
-# New syntax
-@dataclass
-class ContainerNew[T]:
-    value: T
-    metadata: Dict[str, str]
-
-
 # Generic Functions
 # -----------------------------------------
 
@@ -103,7 +58,7 @@ def first_element(lst: List[T]) -> Optional[T]:
 
 
 # New syntax
-def first_element[T](lst: List[T]) -> Optional[T]:
+def first_element[T](lst: List[T]) -> Optional[T]:  # type: ignore[no-redef]
     return lst[0] if lst else None
 
 
@@ -141,7 +96,7 @@ class StackNew[T]:
 
 
 # Usage examples
-def demonstrate_usage():
+def main():
     # Using Stack
     int_stack = Stack[int]()
     int_stack.push(1)
@@ -151,15 +106,8 @@ def demonstrate_usage():
     str_stack.push("hello")
     str_stack.push("world")
 
-    # Using Container
-    int_container = Container[int](42, {"created": "today"})
-    str_container = Container[str]("hello", {"language": "English"})
-
     # Using Pair
     name_age_pair = Pair[str, int]("Alice", 30)
 
-    # Using Statistics
-    stats = Statistics[float]([1.0, 2.0, 3.0, 4.0])
-    avg = stats.average()
 
-demonstrate_usage()
+main()
