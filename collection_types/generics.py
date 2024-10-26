@@ -1,5 +1,4 @@
-from typing import TypeVar, Generic, List, Dict, Optional
-from dataclasses import dataclass
+from typing import TypeVar, Generic, List, Optional
 
 # Basic Generic with both syntaxes
 # -----------------------------------------
