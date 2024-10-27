@@ -61,8 +61,22 @@ def add_is_adult(df: DataFrame[UserSchema]) -> Result[DataFrame[UserSchema], Pro
 # Function to summarize data
 def summarize_data(df: DataFrame[UserSchema]) -> Result[str, ProcessingError]:
     try:
-        average_age = df.age.mean()
-        summary = f"Average age is {average_age}"
+        # Calculate average age
+        avg_age = df.age.mean()
+
+        # Find oldest user
+        oldest_idx = df.age.idxmax()
+        oldest_user = df.iloc[oldest_idx]
+
+        # Count adults
+        adult_count: int = (df.is_adult == True).sum()  # type: ignore
+
+        summary = (
+            f"Summary:\n"
+            f"- Average age is {avg_age:.1f}\n"
+            f"- Oldest user is {oldest_user.name} (ID: {oldest_user.id}) at age {oldest_user.age}\n"
+            f"- Number of adults: {adult_count}"
+        )
         return Success(summary)
     except Exception as e:
         return Failure(ProcessingError(str(e)))
@@ -79,15 +93,21 @@ def process_user_data(valid: bool = True) -> Result[str, ProcessingError]:
 
 
 # Execute with valid data
+print("Testing with valid data:")
 result_valid = process_user_data(valid=True)
-if is_successful(result_valid):
-    print("Success:", result_valid.unwrap())
-else:
-    print("Validation Error:", result_valid.failure())
+match result_valid:
+    case Success(value):
+        print("Success:\n{}".format(value))
+    case Failure(error):
+        print("Error:", error)
+
+print("\n---\n")
 
 # Execute with invalid data
+print("Testing with invalid data:")
 result_invalid = process_user_data(valid=False)
-if is_successful(result_invalid):
-    print("Success:", result_invalid.unwrap())
-else:
-    print("Validation Error:", result_invalid.failure())
+match result_invalid:
+    case Success(value):
+        print("Success:\n{}".format(value))
+    case Failure(error):
+        print("Error:", error)
